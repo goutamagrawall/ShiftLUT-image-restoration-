@@ -1,0 +1,3 @@
+# Upload/preview interface, including the CPU restoration dependencies.
+-r requirements-cpu.txt
+streamlit==1.66.1

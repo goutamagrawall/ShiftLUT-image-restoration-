@@ -1,0 +1,7 @@
+# Optional dependencies used by the original training/benchmark scripts.
+# Those scripts still require their dataset paths and GPU configuration to be set.
+-r requirements.txt
+opencv-python-headless==5.0.0.93
+scipy==1.18.1
+tensorboard==2.21.0
+tqdm==4.70.1
