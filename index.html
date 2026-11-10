@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Enlarge images, remove noise, and clean up JPEG artifacts with ShiftLUT.">
+  <title>ShiftLUT · Image restoration</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <main>
+    <header>
+      <p class="eyebrow">SHIFTLUT / IMAGE RESTORATION</p>
+      <h1>A clearer view, one image at a time.</h1>
+      <p>Upload an image, choose a restoration, and compare the result.</p>
+      <span class="badge">Processed in your browser</span>
+    </header>
+    <div class="workspace">
+      <section class="panel controls" aria-label="Restoration settings">
+        <h2>1. Choose an image</h2>
+        <div class="upload" id="drop">
+          <label for="upload">Attach your image</label>
+          <input id="upload" type="file" accept=".png,.jpg,.jpeg,.webp,.bmp">
+          <p>Drag and drop or browse. Up to 20 MB.</p>
+        </div>
+        <button id="sample" type="button" class="secondary">Try a sample</button>
+        <p id="filename" class="filename" aria-live="polite"></p>
+        <h2>2. Choose a restoration</h2>
+        <fieldset id="tasks">
+          <legend class="sr-only">Restoration task</legend>
+          <label><input type="radio" name="task" value="sr" checked> Enlarge 4×</label>
+          <label><input type="radio" name="task" value="denoising"> Remove noise</label>
+          <label><input type="radio" name="task" value="deblocking"> Clean up JPEG</label>
+        </fieldset>
+        <p id="description" class="muted"></p>
+        <div class="setting" id="variant-setting">
+          <label for="variant">Restoration model</label>
+          <select id="variant"><option value="0">Smallest</option><option value="1" selected>Balanced</option><option value="7">Full model</option></select>
+        </div>
+        <div class="setting">
+          <label for="size">Processing size</label>
+          <select id="size"><option value="256">Quick · up to 256 px</option><option value="512">Larger · up to 512 px</option><option value="0">Original · up to 1 MP</option></select>
+        </div>
+        <p id="dimensions" class="muted"></p>
+        <button id="restore" type="button" class="primary" disabled>Restore image</button>
+        <p id="error" role="alert" hidden></p>
+      </section>
+      <section class="panel results" aria-labelledby="result-heading">
+        <h2 id="result-heading">3. Preview your result</h2>
+        <div id="empty" class="empty">
+          <svg width="45" height="45" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="9" cy="9" r="1.5"/><path d="m3 17 5-4 4 3 4-6 5 7"/></svg>
+          <strong>Your image goes here</strong>
+          <span>Attach an image or load a sample to begin.</span>
+        </div>
+        <div id="views" hidden>
+          <label for="view" class="sr-only">Comparison view</label>
+          <select id="view"><option value="side">Side by side</option><option value="wipe">Wipe comparison</option></select>
+        </div>
+        <div id="side" class="comparison" hidden>
+          <figure><figcaption>Before</figcaption><canvas id="before" role="img" aria-label="Image before restoration"></canvas></figure>
+          <figure id="after-card" hidden><figcaption>After</figcaption><canvas id="after" role="img" aria-label="Restored image"></canvas></figure>
+        </div>
+        <div id="wipe-area" hidden>
+          <canvas id="wipe" role="img" aria-label="Input on the left and restored image on the right"></canvas>
+          <label for="split">Comparison position</label>
+          <input id="split" type="range" min="0" max="100" value="50">
+        </div>
+        <progress id="progress" max="1" hidden aria-label="Restoration progress"></progress>
+        <p id="status" role="status"></p>
+        <a class="primary download" id="download" hidden download>Download restored PNG</a>
+      </section>
+    </div>
+    <footer><a href="https://github.com/goutamagrawall/ShiftLUT-image-restoration-">Project source</a><span>·</span><a href="https://arxiv.org/abs/2603.00906">ShiftLUT paper</a></footer>
+  </main>
+  <script type="module" src="./app.mjs"></script>
+</body>
+</html>

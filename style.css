@@ -1,0 +1,71 @@
+:root {
+  color-scheme: light;
+  --ink: #19332e;
+  --muted: #48605a;
+  --surface: #fff;
+  --background: #f7faf8;
+  --line: #d5e2dc;
+  --accent: #087469;
+  --soft: #eef6f2;
+  font: 16px/1.5 system-ui, sans-serif;
+  color: var(--ink);
+  background: var(--background);
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body { margin: 0; }
+main { max-width: 1180px; padding: clamp(24px, 5vw, 64px) clamp(16px, 4vw, 46px) 22px; margin: auto; }
+header { margin-bottom: 28px; }
+h1 { font-size: clamp(2rem, 4.7vw, 3.45rem); letter-spacing: -.045em; line-height: 1.12; margin: 8px 0 12px; }
+h2 { font-size: 1.1rem; margin: 0 0 12px; }
+p { margin: 0 0 10px; }
+.eyebrow { font-size: .75rem; font-weight: 750; letter-spacing: .14em; color: var(--accent); }
+.badge { display: inline-block; background: #e4f3ed; color: #205848; border-radius: 18px; padding: 4px 11px; font-size: .78rem; }
+.workspace { display: grid; grid-template-columns: minmax(285px, 1fr) minmax(0, 2fr); gap: 18px; align-items: start; }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 20px; min-width: 0; }
+.controls h2:not(:first-child) { margin-top: 19px; }
+.upload { background: var(--soft); border: 1px dashed #93b1a4; border-radius: 9px; padding: 12px; margin-bottom: 8px; }
+.upload.dragging { outline: 2px solid var(--accent); }
+.upload label, .setting label { font-weight: 650; display: block; margin-bottom: 4px; }
+.upload p, .muted, #status, .filename { color: var(--muted); font-size: .84rem; }
+.upload p { margin: 6px 0 0; }
+input[type=file] { max-width: 100%; font: inherit; font-size: .82rem; }
+button, select, .download, input::file-selector-button { font: inherit; border-radius: 7px; }
+button, .download, input::file-selector-button { cursor: pointer; }
+button, .download { font-weight: 650; }
+.primary { display: inline-block; background: var(--accent); color: #fff; border: 1px solid var(--accent); padding: 9px 15px; text-align: center; text-decoration: none; }
+.primary:hover { background: #075b53; }
+.primary:disabled { background: #e3ece7; color: #49625a; border-color: transparent; cursor: default; }
+.controls .primary { width: 100%; }
+.secondary, select, input::file-selector-button { background: white; color: var(--ink); border: 1px solid var(--line); padding: 6px 9px; }
+.secondary:hover, input::file-selector-button:hover { background: var(--soft); }
+.filename { overflow-wrap: anywhere; margin: 7px 0 0; }
+.filename:empty, #dimensions:empty, #status:empty { display: none; }
+fieldset { padding: 0; margin: 0 0 7px; display: grid; gap: 5px; border: 0; }
+fieldset label { display: flex; align-items: center; gap: 8px; padding: 4px 8px; border: 1px solid var(--line); border-radius: 7px; cursor: pointer; }
+fieldset label:has(:checked) { background: var(--soft); border-color: #85ada0; }
+input[type=radio], input[type=range], progress { accent-color: var(--accent); }
+.setting { margin-bottom: 9px; }
+.setting label { font-size: .88rem; }
+.setting select { width: 100%; }
+#error { margin: 8px 0 0; color: #9b2723; }
+.empty { min-height: 335px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 7px; border: 1px dashed var(--line); border-radius: 11px; text-align: center; padding: 15px; color: var(--muted); }
+.empty strong { color: var(--ink); font-size: 1.1rem; }
+.comparison { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.comparison:has(#after-card[hidden]) { grid-template-columns: minmax(0, 1fr); }
+figure { margin: 0; border: 1px solid var(--line); border-radius: 9px; padding: 10px; background: var(--background); }
+figcaption { font-weight: 650; margin-bottom: 8px; }
+canvas { display: block; max-width: 100%; width: 100%; height: auto; max-height: 500px; object-fit: contain; }
+#views { margin-bottom: 12px; }
+#wipe-area label { display: block; margin-top: 8px; }
+#split, progress { width: 100%; }
+#status { margin-top: 10px; }
+.download { margin-top: 2px; }
+footer { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 20px; font-size: .85rem; color: var(--muted); }
+footer a { color: var(--accent); }
+:focus-visible { outline: 3px solid #347b9b; outline-offset: 2px; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+@media (max-width: 750px) {
+  .workspace { grid-template-columns: 1fr; }
+  .empty { min-height: 210px; }
+}
