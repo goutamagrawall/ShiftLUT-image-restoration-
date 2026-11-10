@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Enlarge images, remove noise, and clean up JPEG artifacts with ShiftLUT.">
   <title>ShiftLUT · Image restoration</title>
-  <link rel="stylesheet" href="./style.css">
+  <link rel="stylesheet" href="./style.css?v=sample-gallery">
 </head>
 <body>
   <main>
@@ -23,7 +23,17 @@
           <input id="upload" type="file" accept=".png,.jpg,.jpeg,.webp,.bmp">
           <p>Drag and drop or browse. Up to 20 MB.</p>
         </div>
-        <button id="sample" type="button" class="secondary">Try a sample</button>
+        <div class="samples" role="group" aria-labelledby="samples-label">
+          <p id="samples-label">Or try a sample</p>
+          <div id="sample-gallery" class="sample-gallery">
+            <button type="button" aria-pressed="false"><img src="./samples/chart.png" alt="">Test chart</button>
+            <button type="button" aria-pressed="false"><img src="./samples/portrait.png" alt="">Portrait</button>
+            <button type="button" aria-pressed="false"><img src="./samples/cat.png" alt="">Cat</button>
+            <button type="button" aria-pressed="false"><img src="./samples/coffee.png" alt="">Coffee</button>
+            <button type="button" aria-pressed="false"><img src="./samples/camera.png" alt="">Camera scene</button>
+          </div>
+          <p class="muted">Each sample is degraded to match your restoration choice.</p>
+        </div>
         <p id="filename" class="filename" aria-live="polite"></p>
         <h2>2. Choose a restoration</h2>
         <fieldset id="tasks">
@@ -70,8 +80,8 @@
         <a class="primary download" id="download" hidden download>Download restored PNG</a>
       </section>
     </div>
-    <footer><a href="https://github.com/goutamagrawall/ShiftLUT-image-restoration-">Project source</a><span>·</span><a href="https://arxiv.org/abs/2603.00906">ShiftLUT paper</a></footer>
+    <footer><a href="https://github.com/goutamagrawall/ShiftLUT-image-restoration-">Project source</a><span>·</span><a href="https://arxiv.org/abs/2603.00906">ShiftLUT paper</a><span>·</span><a href="https://github.com/goutamagrawall/ShiftLUT-image-restoration-/blob/main/assets/samples/README.md">Sample photo credits</a></footer>
   </main>
-  <script type="module" src="./app.mjs"></script>
+  <script type="module" src="./app.mjs?v=sample-gallery"></script>
 </body>
 </html>

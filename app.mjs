@@ -5,6 +5,7 @@ const download = el("download");
 const restore = el("restore");
 const progress = el("progress");
 const status = el("status");
+const sampleButtons = [...el("sample-gallery").querySelectorAll("button")];
 const maxPixels = 1_048_576;
 const explanations = {
   sr: "Give a small image more pixels while preserving color.",
@@ -14,7 +15,7 @@ const explanations = {
 const task = () => document.querySelector('input[name="task"]:checked').value;
 const context = (canvas) => canvas.getContext("2d", { willReadFrequently: true });
 let source = null;
-let isSample = false;
+let activeSample = null;
 let fileName = "";
 let worker = null;
 let generation = 0;
@@ -89,11 +90,14 @@ function prepareInput() {
   restore.disabled = false;
 }
 
-async function openSource(load, name, sample) {
+async function openSource(load, name, sample = null) {
   const request = ++generation;
   source?.close?.();
   source = null;
-  isSample = sample;
+  activeSample = sample;
+  for (const button of sampleButtons) {
+    button.setAttribute("aria-pressed", String(button === activeSample));
+  }
   prepareInput();
   status.textContent = "Opening image…";
   try {
@@ -127,39 +131,38 @@ function useFile(file) {
       throw new Error("Choose an image up to 40 megapixels.");
     }
     return image;
-  }, file.name, false);
+  }, file.name);
 }
 
-function useSample() {
+function useSample(button) {
   const selected = task();
+  const thumbnail = button.querySelector("img");
+  const label = button.textContent.trim();
   openSource(async () => {
-    const chart = document.createElement("canvas");
-    chart.width = 192;
-    chart.height = 128;
-    const ctx = context(chart);
-    const gradient = ctx.createLinearGradient(0, 0, 192, 128);
-    gradient.addColorStop(0, "#78918c");
-    gradient.addColorStop(1, "#d2cab3");
-    ctx.fillStyle = gradient;
-    ctx.fillRect(0, 0, 192, 128);
-    ctx.fillStyle = "#223a34";
-    ctx.fillRect(17, 19, 55, 64);
-    ctx.fillStyle = "#f1e0bc";
-    ctx.beginPath();
-    ctx.arc(129, 52, 30, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.strokeStyle = "#334441";
-    ctx.lineWidth = 3;
-    ctx.beginPath();
-    ctx.moveTo(16, 112);
-    ctx.lineTo(175, 93);
-    ctx.stroke();
-    if (selected === "sr") return createImageBitmap(chart, { resizeWidth: 48, resizeHeight: 32, resizeQuality: "high" });
+    try {
+      await thumbnail.decode();
+    } catch {
+      throw new Error("Could not load this sample. Refresh the page or choose another image.");
+    }
+    const width = thumbnail.naturalWidth;
+    const height = thumbnail.naturalHeight;
+    if (selected === "sr") {
+      return createImageBitmap(thumbnail, {
+        resizeWidth: Math.floor(width / 4),
+        resizeHeight: Math.floor(height / 4),
+        resizeQuality: "high",
+      });
+    }
+    const canvas = document.createElement("canvas");
+    canvas.width = width;
+    canvas.height = height;
+    const ctx = context(canvas);
+    ctx.drawImage(thumbnail, 0, 0);
     if (selected === "deblocking") {
-      const jpeg = await new Promise((resolve) => chart.toBlob(resolve, "image/jpeg", 0.1));
+      const jpeg = await new Promise((resolve) => canvas.toBlob(resolve, "image/jpeg", 0.1));
       return createImageBitmap(jpeg);
     }
-    const frame = ctx.getImageData(0, 0, 192, 128);
+    const frame = ctx.getImageData(0, 0, width, height);
     let seed = 23;
     const random = () => {
       seed = (Math.imul(1664525, seed) + 1013904223) >>> 0;
@@ -170,8 +173,8 @@ function useSample() {
       for (let c = 0; c < 3; c++) frame.data[i + c] += noise;
     }
     ctx.putImageData(frame, 0, 0);
-    return createImageBitmap(chart);
-  }, "ShiftLUT sample", true);
+    return createImageBitmap(canvas);
+  }, `${label} sample`, button);
 }
 
 function updateComparison() {
@@ -259,8 +262,10 @@ el("upload").addEventListener("change", (event) => {
   useFile(event.target.files[0]);
   event.target.value = "";
 });
-el("sample").addEventListener("click", useSample);
-el("tasks").addEventListener("change", () => isSample ? useSample() : prepareInput());
+for (const button of sampleButtons) {
+  button.addEventListener("click", () => useSample(button));
+}
+el("tasks").addEventListener("change", () => activeSample ? useSample(activeSample) : prepareInput());
 el("size").addEventListener("change", prepareInput);
 el("variant").addEventListener("change", prepareInput);
 el("view").addEventListener("change", updateComparison);

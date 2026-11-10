@@ -37,8 +37,15 @@ button, .download { font-weight: 650; }
 .primary:hover { background: #075b53; }
 .primary:disabled { background: #e3ece7; color: #49625a; border-color: transparent; cursor: default; }
 .controls .primary { width: 100%; }
-.secondary, select, input::file-selector-button { background: white; color: var(--ink); border: 1px solid var(--line); padding: 6px 9px; }
-.secondary:hover, input::file-selector-button:hover { background: var(--soft); }
+select, input::file-selector-button { background: white; color: var(--ink); border: 1px solid var(--line); padding: 6px 9px; }
+input::file-selector-button:hover { background: var(--soft); }
+.samples { margin-top: 12px; }
+#samples-label { font-size: .88rem; font-weight: 650; margin-bottom: 6px; }
+.sample-gallery { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+.sample-gallery button { padding: 3px 3px 4px; color: var(--ink); background: white; border: 1px solid var(--line); font-size: .74rem; }
+.sample-gallery img { display: block; width: 100%; aspect-ratio: 3 / 2; object-fit: cover; border-radius: 4px; margin-bottom: 3px; }
+.sample-gallery button:hover, .sample-gallery button[aria-pressed=true] { background: var(--soft); border-color: var(--accent); }
+.samples .muted { margin: 7px 0 0; }
 .filename { overflow-wrap: anywhere; margin: 7px 0 0; }
 .filename:empty, #dimensions:empty, #status:empty { display: none; }
 fieldset { padding: 0; margin: 0 0 7px; display: grid; gap: 5px; border: 0; }
